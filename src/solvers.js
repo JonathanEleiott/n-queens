@@ -16,9 +16,37 @@
 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = [];
+  // find a starting point
+  // check if the next position is available to place a piece
+  // if it is available put a piece in that location
+    //check next position
+  //when we have the expected number of pieces 
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  var tempBoard = [];
+  var row = [];
+
+  // initializing board
+  for (let i = 0; i < n; i++) {
+    row.push(0);
+  }
+
+  for (let i = 0; i < n; i++) {
+    board.push(row);
+  }
+  
+  var board = new Board(tempBoard);
+
+  for (var i = 0; i < n; i++) {
+    for (var j = 0; j < n; j++) {
+      if (!hasAnyRowConflicts()) {
+        if (!hasAnyColConflicts()) {
+          tempBoard[i][j] = 1;
+        }
+      }
+    }
+  }
+
   return solution;
 };
 
