@@ -22,32 +22,37 @@ window.findNRooksSolution = function(n) {
   // if it is available put a piece in that location
     //check next position
   //when we have the expected number of pieces 
-
+  console.log('n: ' + n);
   var tempBoard = [];
   var row = [];
 
   // initializing board
-  for (let i = 0; i < n; i++) {
-    row.push(0);
+  for (var i = 0; i < n; i++) {
+    tempBoard.push([]);
+    console.log('tempBoard', tempBoard);
+    
+    for (var j = 0; j < n; j++) {
+      console.log('i', i, 'j', j);
+      tempBoard[i].push(0);
+    }
   }
 
-  for (let i = 0; i < n; i++) {
-    board.push(row);
-  }
-  
   var board = new Board(tempBoard);
 
   for (var i = 0; i < n; i++) {
     for (var j = 0; j < n; j++) {
-      if (!hasAnyRowConflicts()) {
-        if (!hasAnyColConflicts()) {
-          tempBoard[i][j] = 1;
-        }
+      board.attributes[i][j] = 1;
+      console.log('board', board.attributes[i]);
+      console.log('row', board.hasAnyRowConflicts());
+      console.log('col', board.hasAnyColConflicts());
+      if (board.hasAnyRowConflicts() || board.hasAnyColConflicts()) {
+        console.log('conflict detected');
+        board.attributes[i][j] = 0;
       }
     }
   }
 
-  return solution;
+  return board.rows();
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
