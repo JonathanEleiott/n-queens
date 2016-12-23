@@ -69,80 +69,99 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  // find a solution where the amount of queens on the board is equal to the width of the board (in squares) and the queens cannot attack each other
-  // find the starting spot - implement a counter (to track the queens placed)
-      // place new queen in the next available square
-      // check if this is a viable option
-        // we need to keep it
-        // if not, revert back to previous board view
-      // repeat until we come with a viable option
-      // return viable option
-
-  // var counter = 0;
-
-  // for() {
-
-  // }
-
-  var solution = [];
-  var prevBoard = [];
-  var counter = 0;
-  var start = 0;
-  var modifier;
-  var row = [];
-  var blankBoard = [];
-
-  // // initializing blank board
-  // var createBlankBoard = function(n) {
-  //   for (var i = 0; i < n; i++) {
-  //     row.push(0);
-  //   }
-  //   for (var j = 0; j < n; j++) {
-  //     blankBoard.push(row.slice());
-  //   }
-  // };
-  // console.log('n: ', n);
-  // createBlankBoard(n);
-  // console.log(blankBoard);
-
-  while (start < n) {
-    var board = new Board({'n': n});
-    // console.log('start: ', start);
-    // console.log('new board created: ', board.attributes);
-    if (n === 6 && start === 0) {
-      debugger;
-      // console.log('temp', prevBoard);
-    }
+  // initializing blank board
+  var createBlankBoard = function(n) {
+    var blankBoard = [];
+    var row = [];
     for (var i = 0; i < n; i++) {
-      // if we're at the first row, then move the point over
-      if (i === 0) {
-        modifier = start;
-      } else { // otherwise, check from the first columns
-        modifier = 0;
-      }
-      for (var j = modifier; j < n; j++) {
-        prevBoard = [];
-        counter++;
-        for (var k = 0; k < n; k++) {
-          prevBoard.push(board.attributes[k].slice());
-        }
-        // console.log('i: ', i, ' j: ', j);
-        board.attributes[i][j] = 1;
-        if (board.hasAnyRowConflicts() || board.hasAnyColConflicts() || board.hasAnyMajorDiagonalConflicts() || board.hasAnyMinorDiagonalConflicts()) {
-          // board.attributes[i][j] = 0;
-          counter--;
-          board.attributes = prevBoard;
-          board.attributes.n = n;
-        }
-      }
+      row.push(0);
     }
-    if (counter === n) {
-      // solution = board.rows();
-      return board.rows();
+    for (var j = 0; j < n; j++) {
+      blankBoard.push(row.slice());
     }
-    counter = 0;
-    start++;
+    return blankBoard;
+  };
+
+  var row;
+  var counter = 0;
+  
+  if (n === 0) {
+    return [];
   }
+  // go through each starting spot n times
+  var tempBoard = createBlankBoard(n);
+  var prevBoard = [];
+  var board = new Board(tempBoard);
+  var findSolutiontoNQueens = function (nextBoard, row) {
+    if (row === n) {
+      return;
+    }
+    //initialize blank board with size n
+    var board = new Board(nextBoard);
+    board.child = [];
+    console.log(board);
+    board.attributes[row][0] = 1;
+    for (var k = 0; k < n; k++) {
+      prevBoard.push(board.attributes[k].slice());
+    }
+    
+    board.child.push(findSolutiontoNQueens(prevBoard, row + 1));
+    // if (board.hasAnyRowConflicts() || board.hasAnyColConflicts() || board.hasAnyMajorDiagonalConflicts() || board.hasAnyMinorDiagonalConflicts()) {
+      
+    // }
+  };
+  console.log('tempBoard', tempBoard);
+  findSolutiontoNQueens(tempBoard, 0);
+  // push all of those results into a storage object
+  // check for collisions
+  // go to the next row
+  // go through all possible starting spots n times
+  // push results into the stoage object
+  // check for collisions
+  // once we hit completed n rows, push all solutions with n queens into results
+  // return results[0]
+
+  // solutionsCount is length of results
+
+
+  // while (start < n) {
+  //   var board = new Board({'n': n});
+  //   // console.log('start: ', start);
+  //   // console.log('new board created: ', board.attributes);
+  //   if (n === 6 && start === 1) {
+  //     debugger;
+  //     // console.log('temp', prevBoard);
+  //   }
+  //   for (var i = 0; i < n; i++) {
+  //     // if we're at the first row, then move the point over
+  //     if (i === 0) {
+  //       modifier = start;
+  //     } else { // otherwise, check from the first columns
+  //       modifier = 0;
+  //     }
+  //     for (var j = n - 1 - modifier; j >= 0; j--) {
+  //       prevBoard = [];
+  //       counter++;
+  //       for (var k = 0; k < n; k++) {
+  //         prevBoard.push(board.attributes[k].slice());
+  //       }
+  //       // console.log('i: ', i, ' j: ', j);
+  //       board.attributes[i][j] = 1;
+  //       if (board.hasAnyRowConflicts() || board.hasAnyColConflicts() || board.hasAnyMajorDiagonalConflicts() || board.hasAnyMinorDiagonalConflicts()) {
+  //         // board.attributes[i][j] = 0;
+  //         counter--;
+  //         board.attributes = prevBoard;
+  //         board.attributes.n = n;
+  //       }
+  //     }
+  //   }
+  //   if (counter === n) {
+  //     // solution = board.rows();
+  //     return board.rows();
+  //   }
+  //   counter = 0;
+  //   start++;
+  // }
 
   // console.log('n: ', n);
   // console.log('solution: ', solution);
@@ -156,3 +175,7 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+
+
+
